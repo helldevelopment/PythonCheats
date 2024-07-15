@@ -14,16 +14,20 @@ def hack(displayname: str, walkspeed: float = 40.0):
 
     hum = proc.patternscan_all(hum_pattern + display_name.encode(errors="ignore"))
 
-    if hum:
-         ws_a = hum + 0x1b0
-         ws_b = hum + 0x388
-
-         proc.write_float(ws_a, walkspeed)
-         proc.write_float(ws_b, walkspeed)
+    if proc.process_handle:
+        if hum:
+             ws_a = hum + 0x1b0
+             ws_b = hum + 0x388
+    
+             proc.write_float(ws_a, walkspeed)
+             proc.write_float(ws_b, walkspeed)
+        else:
+             print("no humanoid exists")
+    
+             proc.close_process() # close process handle
     else:
-         print("no humanoid exists")
-
-         proc.close_process() # close process handle
+        print("get noobed")
+        proc.close_process() # close process handle
 
 if __name == "__main":
     user_input = input("your display name? ")
